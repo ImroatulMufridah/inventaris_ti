@@ -7,8 +7,29 @@ if (isset($_POST['simpan'])) {
     $lokasi = $_POST['lokasi'];
     $keterangan = $_POST['keterangan'];
 
-    mysqli_query($conn, "INSERT INTO barang (nama_barang, jumlah, lokasi, keterangan) 
-                         VALUES ('$nama','$jumlah','$lokasi','$keterangan')");
+    // Default foto kosong
+    $foto = "";
+
+    // Upload foto jika ada
+    if (!empty($_FILES['foto']['name'])) {
+        $target_dir = "uploads/";
+        if (!is_dir($target_dir)) {
+            mkdir($target_dir, 0777, true);
+        }
+
+        $foto = time() . "_" . basename($_FILES['foto']['name']);
+        $target_file = $target_dir . $foto;
+
+        if (!move_uploaded_file($_FILES['foto']['tmp_name'], $target_file)) {
+            die("Gagal upload foto, cek permission folder uploads/");
+        }
+    }
+
+    // Simpan data ke database
+    $sql = "INSERT INTO barang (nama_barang, jumlah, foto, lokasi, keterangan) 
+            VALUES ('$nama','$jumlah','$foto','$lokasi','$keterangan')";
+    mysqli_query($conn, $sql) or die(mysqli_error($conn));
+
     header("Location: index.php");
     exit;
 }
@@ -25,7 +46,8 @@ if (isset($_POST['simpan'])) {
 <body class="bg-light">
     <div class="container mt-5">
         <h2>Tambah Barang</h2>
-        <form method="post">
+        <!-- enctype WAJIB ada -->
+        <form method="post" enctype="multipart/form-data">
             <div class="mb-3">
                 <label>Nama Barang</label>
                 <input type="text" name="nama_barang" class="form-control" required>
@@ -33,6 +55,10 @@ if (isset($_POST['simpan'])) {
             <div class="mb-3">
                 <label>Jumlah</label>
                 <input type="number" name="jumlah" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label>Foto Barang</label>
+                <input type="file" name="foto" class="form-control" accept="image/*">
             </div>
             <div class="mb-3">
                 <label>Lokasi</label>
