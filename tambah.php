@@ -4,8 +4,6 @@ include "db_connect.php";
 if (isset($_POST['simpan'])) {
     $nama = $_POST['nama_barang'];
     $jumlah = $_POST['jumlah'];
-    $lokasi = $_POST['lokasi'];
-    $keterangan = $_POST['keterangan'];
 
     // Default foto kosong
     $foto = "";
@@ -26,8 +24,8 @@ if (isset($_POST['simpan'])) {
     }
 
     // Simpan data ke database
-    $sql = "INSERT INTO barang (nama_barang, jumlah, foto, lokasi, keterangan) 
-            VALUES ('$nama','$jumlah','$foto','$lokasi','$keterangan')";
+    $sql = "INSERT INTO barang (nama_barang, jumlah, foto) 
+            VALUES ('$nama','$jumlah','$foto')";
     mysqli_query($conn, $sql) or die(mysqli_error($conn));
 
     header("Location: index.php");
@@ -59,14 +57,6 @@ if (isset($_POST['simpan'])) {
             <div class="mb-3">
                 <label>Foto Barang</label>
                 <input type="file" name="foto" class="form-control" accept="image/*">
-            </div>
-            <div class="mb-3">
-                <label>Lokasi</label>
-                <input type="text" name="lokasi" class="form-control">
-            </div>
-            <div class="mb-3">
-                <label>Keterangan</label>
-                <textarea name="keterangan" class="form-control"></textarea>
             </div>
             <button type="submit" name="simpan" class="btn btn-success">Simpan</button>
             <a href="index.php" class="btn btn-secondary">Kembali</a>

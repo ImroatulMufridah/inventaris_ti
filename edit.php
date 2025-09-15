@@ -8,11 +8,9 @@ $data = mysqli_fetch_assoc($result);
 if (isset($_POST['update'])) {
     $nama = $_POST['nama_barang'];
     $jumlah = $_POST['jumlah'];
-    $lokasi = $_POST['lokasi'];
-    $keterangan = $_POST['keterangan'];
 
     mysqli_query($conn, "UPDATE barang SET 
-        nama_barang='$nama', jumlah='$jumlah', lokasi='$lokasi', keterangan='$keterangan' 
+        nama_barang='$nama', jumlah='$jumlah'
         WHERE id=$id");
     header("Location: index.php");
     exit;
@@ -45,14 +43,6 @@ if (isset($_POST['update'])) {
             <div class="mb-3">
                 <label>Jumlah</label>
                 <input type="number" name="jumlah" class="form-control" value="<?= $data['jumlah'] ?>" required>
-            </div>
-            <div class="mb-3">
-                <label>Lokasi</label>
-                <input type="text" name="lokasi" class="form-control" value="<?= $data['lokasi'] ?>">
-            </div>
-            <div class="mb-3">
-                <label>Keterangan</label>
-                <textarea name="keterangan" class="form-control"><?= $data['keterangan'] ?></textarea>
             </div>
             <button type="submit" name="update" class="btn btn-primary">Update</button>
             <a href="index.php" class="btn btn-secondary">Kembali</a>
