@@ -4,11 +4,8 @@ include "db_connect.php";
 if (isset($_POST['simpan'])) {
     $nama = $_POST['nama_barang'];
     $jumlah = $_POST['jumlah'];
-
-    // Default foto kosong
     $foto = "";
 
-    // Upload foto jika ada
     if (!empty($_FILES['foto']['name'])) {
         $target_dir = "uploads/";
         if (!is_dir($target_dir)) {

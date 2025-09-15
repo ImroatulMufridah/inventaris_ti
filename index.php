@@ -1,7 +1,6 @@
 <?php
 include "db_connect.php";
 
-// Hapus barang
 if (isset($_GET['hapus'])) {
     $id = $_GET['hapus'];
 

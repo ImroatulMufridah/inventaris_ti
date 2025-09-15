@@ -1,8 +1,8 @@
 <?php
 $host = "localhost";
-$user = "root"; // sesuaikan
-$pass = "";     // sesuaikan
-$db   = "inventaris";
+$user = "root";
+$pass = "";
+$db = "inventaris";
 
 $conn = mysqli_connect($host, $user, $pass, $db);
 
