@@ -48,14 +48,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $mail->isSMTP();
         $mail->Host       = 'smtp.gmail.com';
         $mail->SMTPAuth   = true;
-        $mail->Username   = 'mufridahfidah@gmail.com';   // Email kamu
-        $mail->Password   = 'xpoc wiqd npbq vcws';       // App Password Gmail
+        $mail->Username   = 'mufridahfidah@gmail.com';   
+        $mail->Password   = 'xpoc wiqd npbq vcws';      
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port       = 587;
 
         $mail->setFrom('mufridahfidah@gmail.com', 'Inventaris TI');
-        $mail->addAddress($_POST['email']); // Email tujuan
-
+        $mail->addAddress($_POST['email']); 
         // Lampirkan PDF
         $mail->addAttachment($pdfPath);
 

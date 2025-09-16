@@ -5,6 +5,12 @@
     <meta charset="UTF-8">
     <title>Inventaris Barang</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+    <!-- DataTables Buttons CSS (untuk export Excel, PDF, Print) -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css">
+
     <style>
         /* --- Global --- */
         body {
@@ -85,7 +91,6 @@
             vertical-align: middle;
         }
 
-        /* Warna header tabel */
         .table-custom thead {
             background: #084127ff;
             color: #fff;
@@ -100,7 +105,6 @@
             font-size: 0.9rem;
         }
 
-        /* --- Responsif Sidebar --- */
         @media (max-width: 768px) {
             .sidebar {
                 position: absolute;
@@ -114,7 +118,6 @@
             }
         }
 
-        /* Override Bootstrap */
         .bg-success {
             background-color: #084127ff !important;
         }
