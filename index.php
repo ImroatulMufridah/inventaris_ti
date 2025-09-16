@@ -14,7 +14,7 @@ $result = mysqli_query($conn, "SELECT * FROM barang ORDER BY id DESC");
             <h3 class="mb-4 text-success">Daftar Barang</h3>
             <div class="d-flex justify-content-between mb-3">
                 <a href="tambah.php" class="btn btn-success">+ Tambah Barang</a>
-                <a href="form_email.php" class="btn btn-outline-success">📧 Kirim Email</a>
+                <a href="kirim_email.php" class="btn btn-outline-success">📧 Kirim Email</a>
             </div>
 
             <div class="table-responsive">
@@ -47,8 +47,8 @@ $result = mysqli_query($conn, "SELECT * FROM barang ORDER BY id DESC");
                                     <a href="edit.php?id=<?= $row['id'] ?>" class="btn btn-sm btn-warning">✏
                                         Edit</a>
                                     <a href="hapus.php?id=<?= $row['id'] ?>"
-                                        onclick="return confirm('Yakin hapus data ini?')"
-                                        class="btn btn-sm btn-danger">🗑 Hapus</a>
+                                        onclick="return confirm('Yakin hapus data ini?')" class="btn btn-sm btn-danger">🗑
+                                        Hapus</a>
                                 </td>
                             </tr>
                         <?php } ?>

@@ -16,7 +16,7 @@ $total = mysqli_fetch_assoc(mysqli_query($conn, "SELECT SUM(jumlah) as total FRO
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            background: #f8f9fa;
+            background: #4e7b56ff;
             font-family: 'Segoe UI', sans-serif;
         }
 

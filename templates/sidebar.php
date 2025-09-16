@@ -6,5 +6,5 @@
             <a href="index.php">Daftar Barang</a>
             <a href="tambah.php">Tambah Barang</a>
             <a href="laporan.php">Laporan</a>
-            <a href="form_email.php">Kirim Email</a>
+            <a href="kirim_email.php">Kirim Email</a>
         </nav>

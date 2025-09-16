@@ -29,72 +29,37 @@ if (isset($_POST['simpan'])) {
     exit;
 }
 ?>
-<!DOCTYPE html>
-<html lang="id">
 
-<head>
-    <meta charset="UTF-8">
-    <title>Tambah Barang</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
-    <style>
-        body {
-            background-color: #4e7b56ff;
-            font-family: 'Segoe UI', sans-serif;
-        }
+<?php include "templates/style_tambah.php"; ?> 
 
-        .card {
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .card-header {
-            background-color: #084127ff;
-            color: #fff;
-            font-size: 1.5rem;
-            font-weight: 600;
-            border-radius: 15px 15px 0 0;
-        }
-
-        .btn-success {
-            background-color: #084127;
-            border-color: #198754;
-        }
-
-        .btn-success:hover {
-            background-color: #157347;
-            border-color: #157347;
-        }
-    </style>
-</head>
-
-<body>
-    <div class="container mt-5">
-        <div class="card mx-auto" style="max-width: 600px;">
-            <div class="card-header text-center">
-                Tambah Barang
-            </div>
-            <div class="card-body">
-                <form method="post" enctype="multipart/form-data">
-                    <div class="mb-3">
-                        <label class="form-label">Nama Barang</label>
-                        <input type="text" name="nama_barang" class="form-control" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Jumlah</label>
-                        <input type="number" name="jumlah" class="form-control" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Foto Barang</label>
-                        <input type="file" name="foto" class="form-control" accept="image/*">
-                    </div>
-                    <div class="d-flex justify-content-between">
-                        <button type="submit" name="simpan" class="btn btn-success">Simpan</button>
-                        <a href="index.php" class="btn btn-secondary">Kembali</a>
-                    </div>
-                </form>
-            </div>
+<div class="container mt-5">
+    <div class="card mx-auto" style="max-width: 600px;">
+        <div class="card-header text-center">
+            Tambah Barang
+        </div>
+        <div class="card-body">
+            <form method="post" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label class="form-label">Nama Barang</label>
+                    <input type="text" name="nama_barang" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Jumlah</label>
+                    <input type="number" name="jumlah" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Foto Barang</label>
+                    <input type="file" name="foto" class="form-control" accept="image/*">
+                </div>
+                <div class="d-flex justify-content-between">
+                    <button type="submit" name="simpan" class="btn btn-success">Simpan</button>
+                    <a href="index.php" class="btn btn-secondary">Kembali</a>
+                </div>
+            </form>
         </div>
     </div>
+</div>
+
 </body>
 
 </html>

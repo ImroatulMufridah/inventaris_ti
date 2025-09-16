@@ -7,7 +7,7 @@
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a class="nav-link active" href="index.php">Dashboard</a></li>
                     <li class="nav-item"><a class="nav-link" href="laporan.php">Laporan</a></li>
-                    <li class="nav-item"><a class="nav-link" href="form_email.php">Kirim Email</a></li>
+                    <li class="nav-item"><a class="nav-link" href="kirim_email.php">Kirim Email</a></li>
                 </ul>
             </div>
         </div>
