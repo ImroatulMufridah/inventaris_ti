@@ -30,10 +30,12 @@ if (isset($_POST['simpan'])) {
 }
 ?>
 
-<?php include "templates/style_tambah.php"; ?> 
+<?php include "templates/header.php"; ?>
+<?php include "templates/navbar.php"; ?>
+<?php include "templates/sidebar.php"; ?>
 
-<div class="container mt-5">
-    <div class="card mx-auto" style="max-width: 600px;">
+<div class="content">
+    <div class="card col-6">
         <div class="card-header text-center">
             Tambah Barang
         </div>
@@ -63,3 +65,4 @@ if (isset($_POST['simpan'])) {
 </body>
 
 </html>
+<?php include "templates/footer.php"; ?>
