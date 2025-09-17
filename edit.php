@@ -26,6 +26,9 @@ if (isset($_POST['update'])) {
     exit;
 }
 ?>
+<?php include "templates/header.php"; ?>
+<?php include "templates/navbar.php"; ?>
+<?php include "templates/sidebar.php"; ?>
 <?php include "templates/style_edit.php"; ?>
 
 </html>

@@ -2,7 +2,6 @@
 session_start();
 include "db_connect.php";
 
-// Cek ID barang
 if (!isset($_GET['id']) || empty($_GET['id'])) {
     die("ID Barang tidak ditemukan.");
 }
