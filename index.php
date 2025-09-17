@@ -2,7 +2,6 @@
 session_start();
 include "db_connect.php";
 
-// Ambil role user dari session
 $role = isset($_SESSION['role']) ? $_SESSION['role'] : '';
 
 $result = mysqli_query($conn, "
