@@ -1,4 +1,14 @@
 <?php
+session_start();
+include "db_connect.php";
+
+
+// Cek role, hanya admin yang bisa akses
+if ($_SESSION['role'] !== 'admin') {
+    echo "<script>alert('Akses ditolak! Hanya admin yang bisa menambah barang.'); window.location='index.php';</script>";
+    exit;
+}
+
 include "db_connect.php";
 
 if (isset($_POST['simpan'])) {
@@ -20,7 +30,6 @@ if (isset($_POST['simpan'])) {
         }
     }
 
-    // Simpan data ke database
     $sql = "INSERT INTO barang (nama_barang, jumlah, foto) 
             VALUES ('$nama','$jumlah','$foto')";
     mysqli_query($conn, $sql) or die(mysqli_error($conn));

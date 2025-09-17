@@ -5,10 +5,19 @@
     <title>Kirim Email - Inventaris</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body { background: #f8f9fa; font-family: 'Segoe UI', sans-serif; }
-        .card { border: none; border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
-        .btn-success { background-color: #084127ff !important; border-color: #084127ff !important; }
-        .btn-success:hover { background-color: #06341f !important; border-color: #06341f !important; }
+        body { 
+            background: #4e7b56ff; 
+            font-family: 'Segoe UI', sans-serif; }
+        .card { 
+            border: none; 
+            border-radius: 15px; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+        .btn-success { 
+            background-color: #084127ff 
+            !important; border-color: #084127ff !important; }
+        .btn-success:hover { 
+            background-color: #06341f 
+            !important; border-color: #06341f !important; }
     </style>
 </head>
 <body>

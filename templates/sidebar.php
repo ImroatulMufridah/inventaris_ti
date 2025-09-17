@@ -7,4 +7,5 @@
             <a href="tambah.php">Tambah Barang</a>
             <a href="laporan.php">Laporan</a>
             <a href="kirim_email.php">Kirim Email</a>
+            <a href="user.php">User</a>
         </nav>

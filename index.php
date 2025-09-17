@@ -1,21 +1,30 @@
 <?php
+session_start();
 include "db_connect.php";
 
-// Ambil data barang
+// Ambil role user dari session, aman jika belum login
+$role = isset($_SESSION['role']) ? $_SESSION['role'] : '';
+
 $result = mysqli_query($conn, "SELECT * FROM barang ORDER BY id DESC");
+if (!$result) {
+    die("Query Error: " . mysqli_error($conn));
+}
 ?>
 <?php include "templates/header.php"; ?>
 <?php include "templates/navbar.php"; ?>
 <?php include "templates/sidebar.php"; ?>
-<!-- Content -->
+
 <div class="content">
     <div class="card">
         <div class="card-body">
             <h3 class="mb-4 text-success">Daftar Barang</h3>
-            <div class="d-flex justify-content-between mb-3">
-                <a href="tambah.php" class="btn btn-success">+ Tambah Barang</a>
-                <a href="kirim_email.php" class="btn btn-outline-success">📧 Kirim Email</a>
-            </div>
+
+            <?php if ($role === 'admin') { ?>
+                <div class="d-flex justify-content-between mb-3">
+                    <a href="tambah.php" class="btn btn-success">+ Tambah Barang</a>
+                    <a href="kirim_email.php" class="btn btn-outline-success">📧 Kirim Email</a>
+                </div>
+            <?php } ?>
 
             <div class="table-responsive">
                 <table class="table table-bordered table-striped align-middle table-custom">
@@ -25,7 +34,9 @@ $result = mysqli_query($conn, "SELECT * FROM barang ORDER BY id DESC");
                             <th>Nama Barang</th>
                             <th>Jumlah</th>
                             <th>Foto</th>
-                            <th>Aksi</th>
+                            <?php if ($role === 'admin') { ?>
+                                <th>Aksi</th>
+                            <?php } ?>
                         </tr>
                     </thead>
                     <tbody>
@@ -43,13 +54,15 @@ $result = mysqli_query($conn, "SELECT * FROM barang ORDER BY id DESC");
                                         <span class="text-muted">-</span>
                                     <?php } ?>
                                 </td>
-                                <td class="text-center">
-                                    <a href="edit.php?id=<?= $row['id'] ?>" class="btn btn-sm btn-warning">✏
-                                        Edit</a>
-                                    <a href="hapus.php?id=<?= $row['id'] ?>"
-                                        onclick="return confirm('Yakin hapus data ini?')" class="btn btn-sm btn-danger">🗑
-                                        Hapus</a>
-                                </td>
+
+                                <?php if ($role === 'admin') { ?>
+                                    <td class="text-center">
+                                        <a href="edit.php?id=<?= $row['id'] ?>" class="btn btn-sm btn-warning">✏ Edit</a>
+                                        <a href="hapus.php?id=<?= $row['id'] ?>"
+                                            onclick="return confirm('Yakin hapus data ini?')" class="btn btn-sm btn-danger">🗑
+                                            Hapus</a>
+                                    </td>
+                                <?php } ?>
                             </tr>
                         <?php } ?>
                     </tbody>
@@ -58,4 +71,5 @@ $result = mysqli_query($conn, "SELECT * FROM barang ORDER BY id DESC");
         </div>
     </div>
 </div>
+
 <?php include "templates/footer.php"; ?>

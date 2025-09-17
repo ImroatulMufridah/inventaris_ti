@@ -7,10 +7,8 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // 1. Ambil data dari database
     $result = mysqli_query($conn, "SELECT * FROM barang ORDER BY nama_barang ASC");
 
-    // 2. Buat PDF laporan inventaris
     $pdf = new FPDF();
     $pdf->AddPage();
     $pdf->SetFont('Arial', 'B', 16);
@@ -21,14 +19,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $pdf->Cell(0, 10, 'Tanggal: ' . date('d-m-Y'), 0, 1);
     $pdf->Ln(3);
 
-    // Header tabel
     $pdf->SetFont('Arial', 'B', 11);
     $pdf->Cell(10, 10, 'No', 1, 0, 'C');
     $pdf->Cell(80, 10, 'Nama Barang', 1, 0, 'C');
     $pdf->Cell(30, 10, 'Jumlah', 1, 0, 'C');
     $pdf->Cell(60, 10, 'Foto', 1, 1, 'C');
 
-    // Isi tabel
     $pdf->SetFont('Arial', '', 11);
     $no = 1;
     while ($row = mysqli_fetch_assoc($result)) {
@@ -38,11 +34,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $pdf->Cell(60, 10, $row['foto'], 1, 1);
     }
 
-    // Simpan PDF ke file
     $pdfPath = __DIR__ . "/laporan_inventaris.pdf";
     $pdf->Output('F', $pdfPath);
 
-    // 3. Kirim email
     $mail = new PHPMailer(true);
     try {
         $mail->isSMTP();
@@ -55,10 +49,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $mail->setFrom('mufridahfidah@gmail.com', 'Inventaris TI');
         $mail->addAddress($_POST['email']); 
-        // Lampirkan PDF
         $mail->addAttachment($pdfPath);
 
-        // Isi email
         $mail->isHTML(true);
         $mail->Subject = $_POST['subject'];
         $mail->Body    = nl2br($_POST['pesan']);

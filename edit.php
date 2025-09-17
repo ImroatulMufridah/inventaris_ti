@@ -1,4 +1,14 @@
 <?php
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit;
+}
+
+if ($_SESSION['role'] !== 'admin') {
+    echo "<script>alert('Akses ditolak! Hanya Admin yang bisa.'); window.location='index.php';</script>";
+    exit;
+}
 include "db_connect.php";
 
 $id = $_GET['id'];
