@@ -1,10 +1,15 @@
 <?php
 include "db_connect.php";
 $result = mysqli_query($conn, "SELECT * FROM user ORDER BY id DESC");
+$link = 'user';
 include "templates/header.php";
 include "templates/navbar.php";
 include "templates/sidebar.php";
 ?>
+
+<!-- Load SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <div class="content">
     <div class="card">
         <div class="card-body">
@@ -30,9 +35,9 @@ include "templates/sidebar.php";
                                 <td><?= htmlspecialchars($row['username']) ?></td>
                                 <td class="text-center"><?= ucfirst($row['role']) ?></td>
                                 <td class="text-center">
-                                    <a href="hapus_user.php?id=<?= $row['id'] ?>"
-                                        onclick="return confirm('Yakin hapus user ini?')" class="btn btn-success">🗑
-                                        Hapus</a>
+                                    <button class="btn btn-success" data-id="<?= $row['id'] ?>">
+                                        🗑 Hapus
+                                    </button>
                                 </td>
                             </tr>
                         <?php } ?>
@@ -42,4 +47,39 @@ include "templates/sidebar.php";
         </div>
     </div>
 </div>
+
+<script>
+    // Event listener untuk tombol hapus
+    document.querySelectorAll('.btn-delete').forEach(button => {
+        button.addEventListener('click', function () {
+            const userId = this.getAttribute('data-id');
+
+            Swal.fire({
+                title: 'Yakin hapus user?',
+                text: "Data tidak bisa dikembalikan!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Hapus',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Redirect ke hapus_user.php
+                    window.location = 'hapus_user.php?id=' + userId;
+                }
+            });
+        });
+    });
+
+    // Optional: SweetAlert2 notifikasi sukses hapus
+    <?php if (isset($_GET['hapus']) && $_GET['hapus'] == 'success') { ?>
+        Swal.fire({
+            icon: 'success',
+            title: 'Berhasil',
+            text: 'User berhasil dihapus!'
+        });
+    <?php } ?>
+</script>
+
 <?php include "templates/footer.php"; ?>

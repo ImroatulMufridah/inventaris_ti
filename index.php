@@ -2,6 +2,8 @@
 session_start();
 include "db_connect.php";
 
+$link = 'barang';
+
 $role = isset($_SESSION['role']) ? $_SESSION['role'] : '';
 
 $result = mysqli_query($conn, "
@@ -44,9 +46,9 @@ if (!$result) {
                     </div>
 
                     <div class="d-flex gap-2">
-                        <a href="kirim_email.php" class="btn btn-success">
+                        <!-- <a href="kirim_email.php" class="btn btn-success">
                             📧 Kirim Email
-                        </a>
+                        </a> -->
                     </div>
                 </div>
 

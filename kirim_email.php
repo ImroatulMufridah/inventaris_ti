@@ -3,8 +3,13 @@ require 'vendor/autoload.php';
 require 'fpdf.php';
 include "db_connect.php";
 
+$link = 'kirim_email';
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
+
+$alertType = '';
+$alertMessage = '';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $result = mysqli_query($conn, "SELECT * FROM barang ORDER BY nama_barang ASC");
@@ -40,12 +45,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $mail = new PHPMailer(true);
     try {
         $mail->isSMTP();
-        $mail->Host       = 'smtp.gmail.com';
-        $mail->SMTPAuth   = true;
-        $mail->Username   = 'mufridahfidah@gmail.com';
-        $mail->Password   = 'xpoc wiqd npbq vcws';
+        $mail->Host = 'smtp.gmail.com';
+        $mail->SMTPAuth = true;
+        $mail->Username = 'mufridahfidah@gmail.com';
+        $mail->Password = 'xpoc wiqd npbq vcws';
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-        $mail->Port       = 587;
+        $mail->Port = 587;
 
         $mail->setFrom('mufridahfidah@gmail.com', 'Inventaris TI');
         $mail->addAddress($_POST['email']);
@@ -53,22 +58,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $mail->isHTML(true);
         $mail->Subject = $_POST['subject'];
-        $mail->Body    = nl2br($_POST['pesan']);
+        $mail->Body = nl2br($_POST['pesan']);
 
         $mail->send();
-        $alert = '<div class="alert alert-success mt-3">✅ Email berhasil dikirim dengan laporan inventaris!</div>';
+        $alertType = 'success';
+        $alertMessage = 'Email berhasil dikirim dengan laporan inventaris!';
     } catch (Exception $e) {
-        $alert = '<div class="alert alert-danger mt-3">❌ Gagal mengirim email. Error: ' . $mail->ErrorInfo . '</div>';
+        $alertType = 'error';
+        $alertMessage = 'Gagal mengirim email. Error: ' . $mail->ErrorInfo;
     }
 }
 ?>
 <?php include "templates/header.php"; ?>
 <?php include "templates/navbar.php"; ?>
 <?php include "templates/sidebar.php"; ?>
+
+<!-- Load SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <div class="content">
     <div class="card p-4 col-6">
         <h3 class="mb-4 text-success">📧 Kirim Email</h3>
-        <?php if (!empty($alert)) echo $alert; ?>
         <form method="post">
             <div class="mb-3">
                 <label class="form-label">Email Tujuan</label>
@@ -80,7 +90,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
             <div class="mb-3">
                 <label class="form-label">Pesan</label>
-                <textarea name="pesan" rows="5" class="form-control" placeholder="Tulis pesan di sini..." required></textarea>
+                <textarea name="pesan" rows="5" class="form-control" placeholder="Tulis pesan di sini..."
+                    required></textarea>
             </div>
             <button type="submit" class="btn btn-success">Kirim Email</button>
             <a href="index.php" class="btn btn-secondary">Kembali</a>
@@ -89,3 +100,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </div>
 
 <?php include "templates/footer.php"; ?>
+
+<?php if (!empty($alertType)): ?>
+    <script>
+        Swal.fire({
+            icon: '<?= $alertType ?>',
+            title: '<?= $alertType === "success" ? "Berhasil" : "Gagal" ?>',
+            text: '<?= $alertMessage ?>'
+        });
+    </script>
+<?php endif; ?>

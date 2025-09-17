@@ -68,6 +68,10 @@
             transform: translateX(5px);
         }
 
+        .sidebar a.active {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
         /* --- Content --- */
         .content {
             flex: 1;
