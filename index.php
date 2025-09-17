@@ -2,6 +2,8 @@
 session_start();
 include "db_connect.php";
 
+$link = 'barang';
+
 $role = isset($_SESSION['role']) ? $_SESSION['role'] : '';
 
 $result = mysqli_query($conn, "

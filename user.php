@@ -1,6 +1,7 @@
 <?php
 include "db_connect.php";
 $result = mysqli_query($conn, "SELECT * FROM user ORDER BY id DESC");
+$link = 'user';
 include "templates/header.php";
 include "templates/navbar.php";
 include "templates/sidebar.php";

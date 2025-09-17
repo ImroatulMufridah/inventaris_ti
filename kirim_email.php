@@ -3,6 +3,8 @@ require 'vendor/autoload.php';
 require 'fpdf.php';
 include "db_connect.php";
 
+$link = 'kirim_email';
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
