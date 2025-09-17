@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 15, 2025 at 09:09 AM
+-- Generation Time: Sep 17, 2025 at 03:20 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -40,7 +40,30 @@ CREATE TABLE `barang` (
 
 INSERT INTO `barang` (`id`, `nama_barang`, `jumlah`, `foto`) VALUES
 (3, 'Laptop', 2, '1757919373_laptop.jpg'),
-(4, 'Pulpen', 10, '1757919832_pulpen.jpg');
+(4, 'Pulpen', 10, '1757919832_pulpen.jpg'),
+(7, 'Printer', 3, '1758004566_printer.png'),
+(8, 'Mouse', 6, '1758005492_mouse.jpg');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user`
+--
+
+CREATE TABLE `user` (
+  `id` int(11) NOT NULL,
+  `username` varchar(50) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `role` enum('admin','user') DEFAULT 'user'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `user`
+--
+
+INSERT INTO `user` (`id`, `username`, `password`, `role`) VALUES
+(7, 'admin', 'admin123', 'admin'),
+(8, 'user1', 'user123', 'user');
 
 --
 -- Indexes for dumped tables
@@ -53,6 +76,13 @@ ALTER TABLE `barang`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `user`
+--
+ALTER TABLE `user`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `username` (`username`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -60,7 +90,13 @@ ALTER TABLE `barang`
 -- AUTO_INCREMENT for table `barang`
 --
 ALTER TABLE `barang`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT for table `user`
+--
+ALTER TABLE `user`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
