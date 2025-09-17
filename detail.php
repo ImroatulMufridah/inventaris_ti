@@ -69,11 +69,7 @@ $keluar = mysqli_query($conn, "
                                         <td><?= (int) $row['jumlah'] ?></td>
                                     </tr>
                                 <?php }
-                            } else { ?>
-                                <tr>
-                                    <td colspan="2"><em>Tidak ada data</em></td>
-                                </tr>
-                            <?php } ?>
+                            } ?>
                         </tbody>
 
                     </table>
@@ -97,11 +93,8 @@ $keluar = mysqli_query($conn, "
                                         <td><?= (int) $row['jumlah'] ?></td>
                                     </tr>
                                 <?php }
-                            } else { ?>
-                                <tr>
-                                    <td colspan="2"><em>Tidak ada data</em></td>
-                                </tr>
-                            <?php } ?>
+                            }  ?>
+                                
                         </tbody>
                     </table>
                 </div>
