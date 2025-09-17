@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 17, 2025 at 03:20 AM
+-- Generation Time: Sep 17, 2025 at 04:59 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -31,6 +31,8 @@ CREATE TABLE `barang` (
   `id` int(11) NOT NULL,
   `nama_barang` varchar(100) NOT NULL,
   `jumlah` int(11) NOT NULL,
+  `total_masuk` int(11) NOT NULL DEFAULT 0,
+  `total_keluar` int(11) NOT NULL DEFAULT 0,
   `foto` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -38,11 +40,56 @@ CREATE TABLE `barang` (
 -- Dumping data for table `barang`
 --
 
-INSERT INTO `barang` (`id`, `nama_barang`, `jumlah`, `foto`) VALUES
-(3, 'Laptop', 2, '1757919373_laptop.jpg'),
-(4, 'Pulpen', 10, '1757919832_pulpen.jpg'),
-(7, 'Printer', 3, '1758004566_printer.png'),
-(8, 'Mouse', 6, '1758005492_mouse.jpg');
+INSERT INTO `barang` (`id`, `nama_barang`, `jumlah`, `total_masuk`, `total_keluar`, `foto`) VALUES
+(4, 'Pulpen', 8, 0, 13, '1757919832_pulpen.jpg'),
+(7, 'Printer', 7, 0, 0, '1758004566_printer.png'),
+(8, 'Mouse', 10, 4, 0, '1758005492_mouse.jpg'),
+(9, 'Monitor', 4, 0, 3, '1758073685_monitor.jpg'),
+(12, 'Meja', 5, 0, 0, '1758075510_meja.png'),
+(13, 'Laptop', 9, 10, 8, '1758075611_laptop.jpg');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `barang_keluar`
+--
+
+CREATE TABLE `barang_keluar` (
+  `id` int(11) NOT NULL,
+  `barang_id` int(11) NOT NULL,
+  `jumlah` int(11) NOT NULL,
+  `tanggal` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `barang_keluar`
+--
+
+INSERT INTO `barang_keluar` (`id`, `barang_id`, `jumlah`, `tanggal`) VALUES
+(1, 9, 2, '2025-09-06'),
+(2, 4, 1, '2025-09-02'),
+(3, 12, 1, '2025-09-10');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `barang_masuk`
+--
+
+CREATE TABLE `barang_masuk` (
+  `id` int(11) NOT NULL,
+  `barang_id` int(11) NOT NULL,
+  `jumlah` int(11) NOT NULL,
+  `tanggal` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `barang_masuk`
+--
+
+INSERT INTO `barang_masuk` (`id`, `barang_id`, `jumlah`, `tanggal`) VALUES
+(1, 4, 12, '2025-09-02'),
+(2, 12, 1, '2025-09-16');
 
 -- --------------------------------------------------------
 
@@ -76,6 +123,20 @@ ALTER TABLE `barang`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `barang_keluar`
+--
+ALTER TABLE `barang_keluar`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `barang_id` (`barang_id`);
+
+--
+-- Indexes for table `barang_masuk`
+--
+ALTER TABLE `barang_masuk`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `barang_id` (`barang_id`);
+
+--
 -- Indexes for table `user`
 --
 ALTER TABLE `user`
@@ -90,13 +151,41 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `barang`
 --
 ALTER TABLE `barang`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+
+--
+-- AUTO_INCREMENT for table `barang_keluar`
+--
+ALTER TABLE `barang_keluar`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `barang_masuk`
+--
+ALTER TABLE `barang_masuk`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `barang_keluar`
+--
+ALTER TABLE `barang_keluar`
+  ADD CONSTRAINT `barang_keluar_ibfk_1` FOREIGN KEY (`barang_id`) REFERENCES `barang` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `barang_masuk`
+--
+ALTER TABLE `barang_masuk`
+  ADD CONSTRAINT `barang_masuk_ibfk_1` FOREIGN KEY (`barang_id`) REFERENCES `barang` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

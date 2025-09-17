@@ -15,7 +15,7 @@ $total = mysqli_fetch_assoc(mysqli_query($conn, "SELECT SUM(jumlah) as total FRO
             <h3>Laporan Inventaris Barang</h3>
             <div class="no-print">
                 <a href="index.php" class="btn btn-light">← Kembali</a>
-                <button onclick="window.print()" class="btn btn-warning">🖨 Cetak</button>
+                <button onclick="window.print()" class="btn btn-success">🖨 Cetak</button>
             </div>
         </div>
         <div class="card-body">

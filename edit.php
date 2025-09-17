@@ -26,37 +26,6 @@ if (isset($_POST['update'])) {
     exit;
 }
 ?>
-<?php include "templates/header.php"; ?>
-<?php include "templates/navbar.php"; ?>
-<?php include "templates/sidebar.php"; ?>
-<div class="content">
-    <div class="card col-6">
-        <div class="card-header text-center">
-            Edit Barang
-        </div>
-        <div class="card-body">
-            <h2>Edit Barang</h2>
-            <form method="post" enctype="multipart/form-data">
-                <div class="mb-3">
-                    <label>Foto Barang</label><br>
-                    <?php if ($data['foto']) { ?>
-                        <img src="uploads/<?= $data['foto'] ?>" width="100" class="mb-2 rounded"><br>
-                    <?php } ?>
-                    <input type="file" name="foto" class="form-control" accept="image/*">
-                </div>
-                <div class="mb-3">
-                    <label>Nama Barang</label>
-                    <input type="text" name="nama_barang" class="form-control" value="<?= $data['nama_barang'] ?>" required>
-                </div>
-                <div class="mb-3">
-                    <label>Jumlah</label>
-                    <input type="number" name="jumlah" class="form-control" value="<?= $data['jumlah'] ?>" required>
-                </div>
-                <button type="submit" name="update" class="btn btn-primary">Update</button>
-                <a href="index.php" class="btn btn-secondary">Kembali</a>
-            </form>
-        </div>
-    </div>
-</div>
+<?php include "templates/style_edit.php"; ?>
 
-<?php include "templates/footer.php"; ?>
+</html>

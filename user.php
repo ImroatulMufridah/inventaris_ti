@@ -23,15 +23,16 @@ include "templates/sidebar.php";
                         </tr>
                     </thead>
                     <tbody>
-                        <?php $no=1; while ($row = mysqli_fetch_assoc($result)) { ?>
+                        <?php $no = 1;
+                        while ($row = mysqli_fetch_assoc($result)) { ?>
                             <tr>
                                 <td class="text-center"><?= $no++ ?></td>
                                 <td><?= htmlspecialchars($row['username']) ?></td>
                                 <td class="text-center"><?= ucfirst($row['role']) ?></td>
                                 <td class="text-center">
-                                    <a href="hapus_user.php?id=<?= $row['id'] ?>" 
-                                       onclick="return confirm('Yakin hapus user ini?')" 
-                                       class="btn btn-sm btn-danger">🗑 Hapus</a>
+                                    <a href="hapus_user.php?id=<?= $row['id'] ?>"
+                                        onclick="return confirm('Yakin hapus user ini?')" class="btn btn-success">🗑
+                                        Hapus</a>
                                 </td>
                             </tr>
                         <?php } ?>

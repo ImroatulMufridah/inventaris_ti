@@ -2,10 +2,21 @@
 session_start();
 include "db_connect.php";
 
-// Ambil role user dari session, aman jika belum login
+// Ambil role user dari session
 $role = isset($_SESSION['role']) ? $_SESSION['role'] : '';
 
-$result = mysqli_query($conn, "SELECT * FROM barang ORDER BY id DESC");
+$result = mysqli_query($conn, "
+    SELECT 
+        b.id, 
+        b.nama_barang, 
+        b.jumlah AS stok,
+        b.foto,
+        IFNULL((SELECT SUM(m.jumlah) FROM barang_masuk m WHERE m.barang_id = b.id), 0) AS total_masuk,
+        IFNULL((SELECT SUM(k.jumlah) FROM barang_keluar k WHERE k.barang_id = b.id), 0) AS total_keluar
+    FROM barang b
+    ORDER BY b.id DESC
+");
+
 if (!$result) {
     die("Query Error: " . mysqli_error($conn));
 }
@@ -20,10 +31,26 @@ if (!$result) {
             <h3 class="mb-4 text-success">Daftar Barang</h3>
 
             <?php if ($role === 'admin') { ?>
-                <div class="d-flex justify-content-between mb-3">
-                    <a href="tambah.php" class="btn btn-success">+ Tambah Barang</a>
-                    <a href="kirim_email.php" class="btn btn-outline-success">📧 Kirim Email</a>
+                <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+                    <div class="d-flex gap-2">
+                        <a href="tambah.php" class="btn btn-success">
+                            + Tambah Barang
+                        </a>
+                        <a href="barang_masuk.php" class="btn btn-success">
+                            📥 Barang Masuk
+                        </a>
+                        <a href="barang_keluar.php" class="btn btn-success">
+                            📤 Barang Keluar
+                        </a>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <a href="kirim_email.php" class="btn btn-success">
+                            📧 Kirim Email
+                        </a>
+                    </div>
                 </div>
+
             <?php } ?>
 
             <div class="table-responsive">
@@ -32,8 +59,10 @@ if (!$result) {
                         <tr>
                             <th>No</th>
                             <th>Nama Barang</th>
-                            <th>Jumlah</th>
+                            <th>Stok Sekarang</th>
                             <th>Foto</th>
+                            <th>Total Masuk</th>
+                            <th>Total Keluar</th>
                             <?php if ($role === 'admin') { ?>
                                 <th>Aksi</th>
                             <?php } ?>
@@ -45,21 +74,29 @@ if (!$result) {
                             <tr>
                                 <td class="text-center"><?= $no++ ?></td>
                                 <td><?= htmlspecialchars($row['nama_barang']) ?></td>
-                                <td class="text-center"><?= (int) $row['jumlah'] ?></td>
+                                <td class="text-center"><?= (int) $row['stok'] ?></td>
                                 <td class="text-center">
-                                    <?php if (!empty($row['foto'])) { ?>
-                                        <img src="uploads/<?= htmlspecialchars($row['foto']) ?>" width="80" height="60"
-                                            class="img-thumbnail" style="object-fit:cover;" alt="Foto Barang">
-                                    <?php } else { ?>
-                                        <span class="text-muted">-</span>
-                                    <?php } ?>
+                                    <?php
+                                    $folder = 'uploads/';
+                                    $foto = !empty($row['foto']) ? $row['foto'] : '';
+
+                                    if ($foto && file_exists($folder . $foto)) {
+                                        echo '<img src="' . $folder . htmlspecialchars($foto) . '" width="80" height="60" class="img-thumbnail" style="object-fit:cover;" alt="Foto Barang">';
+                                    } else {
+                                        echo '<span class="text-muted">-</span>';
+                                    }
+                                    ?>
                                 </td>
+
+                                <td class="text-center"><?= (int) $row['total_masuk'] ?></td>
+                                <td class="text-center"><?= (int) $row['total_keluar'] ?></td>
 
                                 <?php if ($role === 'admin') { ?>
                                     <td class="text-center">
-                                        <a href="edit.php?id=<?= $row['id'] ?>" class="btn btn-sm btn-warning">✏ Edit</a>
+                                        <a href="detail.php?id=<?= $row['id'] ?>" class="btn btn-success">📊 Riwayat</a>
+                                        <a href="edit.php?id=<?= $row['id'] ?>" class="btn btn-success">✏ Edit</a>
                                         <a href="hapus.php?id=<?= $row['id'] ?>"
-                                            onclick="return confirm('Yakin hapus data ini?')" class="btn btn-sm btn-danger">🗑
+                                            onclick="return confirm('Yakin hapus data ini?')" class="btn btn-success">🗑
                                             Hapus</a>
                                     </td>
                                 <?php } ?>
