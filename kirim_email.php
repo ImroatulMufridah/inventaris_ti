@@ -1,7 +1,7 @@
 <?php
-require 'vendor/autoload.php'; 
-require 'fpdf.php';           
-include "db_connect.php";     
+require 'vendor/autoload.php';
+require 'fpdf.php';
+include "db_connect.php";
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
@@ -42,13 +42,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $mail->isSMTP();
         $mail->Host       = 'smtp.gmail.com';
         $mail->SMTPAuth   = true;
-        $mail->Username   = 'mufridahfidah@gmail.com';   
-        $mail->Password   = 'xpoc wiqd npbq vcws';      
+        $mail->Username   = 'mufridahfidah@gmail.com';
+        $mail->Password   = 'xpoc wiqd npbq vcws';
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port       = 587;
 
         $mail->setFrom('mufridahfidah@gmail.com', 'Inventaris TI');
-        $mail->addAddress($_POST['email']); 
+        $mail->addAddress($_POST['email']);
         $mail->addAttachment($pdfPath);
 
         $mail->isHTML(true);
@@ -62,6 +62,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 ?>
-<?php include "templates/style_email.php"; ?> 
+<?php include "templates/header.php"; ?>
+<?php include "templates/navbar.php"; ?>
+<?php include "templates/sidebar.php"; ?>
+<div class="content">
+    <div class="card p-4 col-6">
+        <h3 class="mb-4 text-success">📧 Kirim Email</h3>
+        <?php if (!empty($alert)) echo $alert; ?>
+        <form method="post">
+            <div class="mb-3">
+                <label class="form-label">Email Tujuan</label>
+                <input type="email" name="email" class="form-control" placeholder="contoh@email.com" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Subjek</label>
+                <input type="text" name="subject" class="form-control" value="Laporan Inventaris Barang" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Pesan</label>
+                <textarea name="pesan" rows="5" class="form-control" placeholder="Tulis pesan di sini..." required></textarea>
+            </div>
+            <button type="submit" class="btn btn-success">Kirim Email</button>
+            <a href="index.php" class="btn btn-secondary">Kembali</a>
+        </form>
+    </div>
+</div>
 
-</html>
+<?php include "templates/footer.php"; ?>
