@@ -2,6 +2,9 @@
 session_start();
 include "db_connect.php";
 
+$success = false;
+$error = '';
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $barang_id = (int) $_POST['barang_id'];
     $jumlah = (int) $_POST['jumlah'];
@@ -12,22 +15,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stok = mysqli_fetch_assoc($cek)['jumlah'];
 
     if ($stok < $jumlah) {
-        // jika stok kurang, jangan diproses
-        header("Location: barang_keluar.php?error=stok_kurang");
-        exit;
+        $error = 'stok_kurang';
+    } else {
+        // simpan log barang keluar
+        mysqli_query($conn, "INSERT INTO barang_keluar (barang_id, jumlah, tanggal) 
+                             VALUES ('$barang_id', '$jumlah', '$tanggal')")
+            or die("Query insert error: " . mysqli_error($conn));
+
+        // update stok di tabel barang (kurangi)
+        mysqli_query($conn, "UPDATE barang SET jumlah = jumlah - $jumlah WHERE id = $barang_id")
+            or die("Query update error: " . mysqli_error($conn));
+
+        $success = true;
     }
-
-    // simpan log barang keluar
-    mysqli_query($conn, "INSERT INTO barang_keluar (barang_id, jumlah, tanggal) 
-                         VALUES ('$barang_id', '$jumlah', '$tanggal')")
-        or die("Query insert error: " . mysqli_error($conn));
-
-    // update stok di tabel barang (kurangi)
-    mysqli_query($conn, "UPDATE barang SET jumlah = jumlah - $jumlah WHERE id = $barang_id")
-        or die("Query update error: " . mysqli_error($conn));
-
-    header("Location: index.php?success=1");
-    exit;
 }
 ?>
 
@@ -35,16 +35,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <?php include "templates/navbar.php"; ?>
 <?php include "templates/sidebar.php"; ?>
 
+<!-- Load SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <div class="content">
     <div class="card shadow-sm">
         <div class="card-body">
             <h4 class="text-success mb-4">📤 Tambah Barang Keluar</h4>
 
-            <?php if (isset($_GET['error']) && $_GET['error'] == 'stok_kurang') { ?>
-                <div class="alert alert-danger">❌ Stok tidak mencukupi untuk jumlah yang diminta.</div>
-            <?php } ?>
-
-            <form method="post" class="needs-validation" novalidate>
+            <form id="formKeluar" method="post" class="needs-validation" novalidate>
                 <!-- Pilih Barang pakai Select2 -->
                 <div class="mb-3">
                     <label for="barang_id" class="form-label">Pilih Barang</label>
@@ -76,46 +75,63 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </div>
 </div>
 
-<!-- Select2 CSS -->
+<!-- Select2 CSS & JS -->
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-
-<!-- jQuery & Select2 JS -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 <script>
-    // Bootstrap form validation
-    (() => {
-        'use strict'
-        const forms = document.querySelectorAll('.needs-validation')
-        Array.from(forms).forEach(form => {
-            form.addEventListener('submit', event => {
-                if (!form.checkValidity()) {
-                    event.preventDefault()
-                    event.stopPropagation()
-                }
-                form.classList.add('was-validated')
-            }, false)
-        })
-    })();
+    // Konfirmasi sebelum submit
+    document.getElementById('formKeluar').addEventListener('submit', function (e) {
+        e.preventDefault();
+        const form = this;
 
+        Swal.fire({
+            title: 'Konfirmasi',
+            text: "Yakin ingin menambahkan barang keluar?",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#28a745',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, simpan!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                form.submit();
+            }
+        });
+    });
+
+    // Select2 AJAX
     $('#barang_id').select2({
         placeholder: "Ketik nama barang...",
         allowClear: true,
         ajax: {
-            url: "get_barang.php?type=keluar", // 👈 pakai type=keluar
+            url: "get_barang.php?type=keluar",
             dataType: "json",
             delay: 250,
-            data: function (params) {
-                return { q: params.term || "" };
-            },
-            processResults: function (data) {
-                return { results: data.results };
-            },
+            data: function (params) { return { q: params.term || "" }; },
+            processResults: function (data) { return { results: data.results }; },
             cache: true
         }
     });
 
+    // SweetAlert sukses atau error
+    <?php if (!empty($success)): ?>
+        Swal.fire({
+            icon: 'success',
+            title: 'Berhasil',
+            text: 'Barang keluar berhasil disimpan!',
+            timer: 1500,
+            showConfirmButton: false
+        }).then(() => { window.location.href = 'index.php'; });
+    <?php elseif ($error === 'stok_kurang'): ?>
+        Swal.fire({
+            icon: 'error',
+            title: 'Gagal',
+            text: 'Stok tidak mencukupi untuk jumlah yang diminta!'
+        });
+    <?php endif; ?>
 </script>
 
 <?php include "templates/footer.php"; ?>

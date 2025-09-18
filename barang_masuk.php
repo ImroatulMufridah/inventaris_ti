@@ -16,8 +16,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $sql_update = "UPDATE barang SET jumlah = jumlah + $jumlah WHERE id = $barang_id";
     mysqli_query($conn, $sql_update) or die("Query update error: " . mysqli_error($conn));
 
-    header("Location: index.php?success=1");
-    exit;
+    // tandai sukses untuk JS
+    $success = true;
 }
 ?>
 
@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <div class="card-body">
             <h4 class="text-success mb-4">📥 Tambah Barang Masuk</h4>
 
-            <form method="post" class="needs-validation" novalidate>
+            <form id="formMasuk" method="post" class="needs-validation" novalidate>
                 <!-- Pilih Barang dengan Select2 AJAX -->
                 <div class="mb-3">
                     <label for="barang_id" class="form-label">Pilih Barang</label>
@@ -62,42 +62,60 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </div>
 </div>
 
-<!-- Select2 CSS -->
-<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<!-- Load SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-<!-- jQuery & Select2 JS -->
+<script>
+    // Konfirmasi sebelum submit
+    document.getElementById('formMasuk').addEventListener('submit', function (e) {
+        e.preventDefault();
+        const form = this;
+
+        Swal.fire({
+            title: 'Konfirmasi',
+            text: "Yakin ingin menambahkan barang masuk?",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#28a745',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, simpan!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                form.submit(); // submit form
+            }
+        });
+    });
+
+    // Notifikasi sukses setelah submit
+    <?php if (!empty($success)): ?>
+        Swal.fire({
+            icon: 'success',
+            title: 'Berhasil',
+            text: 'Barang masuk berhasil disimpan!',
+            timer: 1500,
+            showConfirmButton: false
+        }).then(() => {
+            window.location.href = 'index.php'; // redirect setelah notifikasi
+        });
+    <?php endif; ?>
+</script>
+
+<!-- Select2 CSS & JS -->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 <script>
-    // Bootstrap form validation
-    (() => {
-        'use strict'
-        const forms = document.querySelectorAll('.needs-validation')
-        Array.from(forms).forEach(form => {
-            form.addEventListener('submit', event => {
-                if (!form.checkValidity()) {
-                    event.preventDefault()
-                    event.stopPropagation()
-                }
-                form.classList.add('was-validated')
-            }, false)
-        })
-    })();
-
     $('#barang_id').select2({
         placeholder: "Ketik nama barang...",
         allowClear: true,
         ajax: {
-            url: "get_barang.php?type=masuk", // 👈 pakai type=keluar
+            url: "get_barang.php?type=masuk",
             dataType: "json",
             delay: 250,
-            data: function (params) {
-                return { q: params.term || "" };
-            },
-            processResults: function (data) {
-                return { results: data.results };
-            },
+            data: function (params) { return { q: params.term || "" }; },
+            processResults: function (data) { return { results: data.results }; },
             cache: true
         }
     });

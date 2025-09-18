@@ -35,7 +35,7 @@ include "templates/sidebar.php";
                                 <td><?= htmlspecialchars($row['username']) ?></td>
                                 <td class="text-center"><?= ucfirst($row['role']) ?></td>
                                 <td class="text-center">
-                                    <button class="btn btn-success" data-id="<?= $row['id'] ?>">
+                                    <button class="btn btn-success btn-delete" data-id="<?= $row['id'] ?>">
                                         🗑 Hapus
                                     </button>
                                 </td>

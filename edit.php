@@ -62,7 +62,7 @@ if (isset($_POST['update'])) {
     <div class="card col-6">
         <div class="card-body">
             <h2>Edit Barang</h2>
-            <form method="post" enctype="multipart/form-data">
+            <form id="editForm" method="post" enctype="multipart/form-data">
                 <div class="mb-3">
                     <label>Foto Barang</label><br>
                     <?php if ($data['foto']) { ?>
@@ -86,7 +86,31 @@ if (isset($_POST['update'])) {
     </div>
 </div>
 
-<?php include "templates/footer.php"; ?>
+<!-- SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    // Konfirmasi sebelum submit form
+    document.getElementById('editForm').addEventListener('submit', function (e) {
+        e.preventDefault(); // hentikan submit sementara
+
+        Swal.fire({
+            title: 'Apakah Anda yakin?',
+            text: "Data barang akan diperbarui!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#28a745',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, update!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Submit form jika konfirmasi Ya
+                e.target.submit();
+            }
+        });
+    });
+</script>
 
 <?php if (isset($_POST['update'])): ?>
     <script>

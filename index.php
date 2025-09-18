@@ -44,12 +44,6 @@ if (!$result) {
                             📤 Barang Keluar
                         </a>
                     </div>
-
-                    <div class="d-flex gap-2">
-                        <!-- <a href="kirim_email.php" class="btn btn-success">
-                            📧 Kirim Email
-                        </a> -->
-                    </div>
                 </div>
 
             <?php } ?>
@@ -94,11 +88,15 @@ if (!$result) {
 
                                 <?php if ($role === 'admin') { ?>
                                     <td class="text-center">
-                                        <a href="detail.php?id=<?= $row['id'] ?>" class="btn btn-success">📊 Riwayat</a>
-                                        <a href="edit.php?id=<?= $row['id'] ?>" class="btn btn-success">✏ Edit</a>
-                                        <a href="hapus.php?id=<?= $row['id'] ?>"
-                                            onclick="return confirm('Yakin hapus data ini?')" class="btn btn-success">🗑
-                                            Hapus</a>
+                                        <div class="d-flex justify-content-center gap-2">
+                                            <a href="detail.php?id=<?= $row['id'] ?>" class="btn btn-success btn-sm">📊
+                                                Riwayat</a>
+                                            <a href="edit.php?id=<?= $row['id'] ?>" class="btn btn-success btn-sm">✏ Edit</a>
+                                            <a href="hapus.php?id=<?= $row['id']; ?>" class="btn btn-success btn-sm"
+                                                onclick="return confirmHapus(event, <?= $row['id']; ?>)">
+                                                🗑 Hapus
+                                            </a>
+                                        </div>
                                     </td>
                                 <?php } ?>
                             </tr>
@@ -109,5 +107,28 @@ if (!$result) {
         </div>
     </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    function confirmHapus(event, id) {
+        event.preventDefault();
+        Swal.fire({
+            title: 'Yakin hapus data?',
+            text: "Data tidak bisa dikembalikan setelah dihapus!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Ya, hapus!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = 'hapus.php?id=' + id;
+            }
+        });
+
+        return false;
+    }
+</script>
+
 
 <?php include "templates/footer.php"; ?>
