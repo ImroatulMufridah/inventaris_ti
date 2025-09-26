@@ -1,0 +1,1 @@
+<?php include APPPATH . 'views/templates/style_login.php'; ?>

@@ -1,0 +1,3 @@
+<?php
+/* File ini dipindahkan dari root ke application/third_party/fpdf agar sesuai best practice CI3. */
+// ...existing code...
